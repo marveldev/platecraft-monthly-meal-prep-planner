@@ -90,7 +90,7 @@
       var dayNames = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
       // Match month layout: use the same responsive columns and compact list markup so week cards
       // share styling/spacing with the month view.
-      var $grid = $('<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-7 gap-3 print-week"></div>');
+      var $grid = $('<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-7 gap-3 print-week"></div>');
       week.forEach(function(p, i){
         var dayLabel = dayNames[i];
         var $card = $(`
@@ -118,7 +118,7 @@
       $('#week-container').addClass('hidden');
       var $wrap = $('#month-container').removeClass('hidden').empty();
       var dayNames = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-      var $grid = $('<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-7 gap-3"></div>');
+      var $grid = $('<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-7 gap-3"></div>');
       state.plan.forEach(function(p, idx){
         var label = dayNames[idx % 7];
         var $cell = $(`

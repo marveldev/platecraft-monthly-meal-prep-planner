@@ -16,6 +16,14 @@ $(function(){
     }
     window.App.init();
     window.App.render();
+    // Register a service worker to enable PWA installability
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').then(function(reg){
+        console.log('Service worker registered:', reg.scope);
+      }).catch(function(err){
+        console.warn('Service worker registration failed:', err);
+      });
+    }
   } catch (e) {
     console.error('Initialization failed', e);
   }
