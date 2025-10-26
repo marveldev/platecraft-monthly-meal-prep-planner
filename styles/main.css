@@ -1,0 +1,45 @@
+/* Global Styles for PlateCraft */
+:root {
+  --ink: #0F172A;
+  --cream: #FFF9F2;
+  --mist: #F2F5F9;
+  --terracotta: #E25C3D;
+  --sky: #3AA0C7;
+  --gold: #E2B714;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--cream); color: var(--ink); }
+
+/***** Micro-interactions *****/
+.btn-primary, .btn-ghost, .btn-icon { transition: transform 120ms ease, box-shadow 200ms ease; }
+.btn-primary:focus-visible, .btn-ghost:focus-visible, .btn-icon:focus-visible { outline: 0; box-shadow: 0 0 0 3px rgba(58, 160, 199, 0.25); }
+
+/***** Toggle switch dot *****/
+#toggle-desserts:checked + span .dot { transform: translateX(16px); background: #3AA0C7; }
+
+/***** Day grid accessibility *****/
+.day-cell:focus { box-shadow: 0 0 0 3px rgba(58, 160, 199, 0.35); }
+
+/***** Print Styles *****/
+@media print {
+  body { background: #fff; }
+  header, #library, #export, #tab-month, #tab-week, #btn-prev-week, #btn-next-week, #btn-print { display: none !important; }
+  main { padding: 0; }
+  .print-week { page-break-after: always; break-after: page; }
+  .day-cell { border-color: #ddd !important; }
+  a::after { content: "" !important; }
+}
+
+/* Utility */
+.hidden { display: none; }
+
+/* Responsive helpers for table-like mobile scroll containers if needed */
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.table-scroll table { width: 100%; border-collapse: collapse; }
+.table-scroll th, .table-scroll td { padding: 0.75rem; border-bottom: 1px solid rgba(15,23,42,0.08); }
+
+/* Motion prefs */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}

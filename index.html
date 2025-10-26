@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PlateCraft | Monthly Meal Prep Planner</title>
+  <meta name="description" content="Plan a month of meals in minutes. Auto-balance breakfast, lunch, dinner, and dessert with beautiful exports and print-ready layouts.">
+  <link rel="stylesheet" href="styles/main.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#0F172A',
+            cream: '#FFF9F2',
+            mist: '#F2F5F9',
+            terracotta: '#E25C3D',
+            sky: '#3AA0C7',
+            gold: '#E2B714'
+          },
+          fontFamily: {
+            display: ['Inter', 'ui-sans-serif', 'system-ui', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji'],
+            body: ['Inter', 'ui-sans-serif', 'system-ui']
+          },
+          boxShadow: {
+            soft: '0 10px 30px rgba(15, 23, 42, 0.08)'
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <style type="text/tailwindcss" data-teda="tailwind-apply">
+    @layer components {
+      .btn-primary { @apply inline-flex items-center justify-center whitespace-nowrap rounded-full bg-terracotta px-5 py-3 text-white font-medium tracking-wide shadow-soft transition hover:bg-[#cf4c2b] focus:outline-none focus:ring-2 focus:ring-terracotta/30 active:scale-[0.98]; }
+      .btn-ghost { @apply inline-flex items-center justify-center whitespace-nowrap rounded-full border border-ink/10 bg-white px-5 py-3 text-ink font-medium hover:bg-mist transition focus:outline-none focus:ring-2 focus:ring-sky/20; }
+      .chip { @apply inline-flex items-center rounded-full bg-mist text-ink/80 text-xs font-medium px-3 py-1; }
+      .card { @apply rounded-2xl bg-white shadow-soft; }
+      .card-hover { @apply transition hover:-translate-y-1 hover:shadow-lg; }
+      .kicker { @apply uppercase tracking-widest text-[11px] text-ink/60 font-semibold; }
+      .link-cta { @apply text-sky hover:text-sky/80 underline underline-offset-4; }
+    }
+  </style>
+</head>
+<body class="bg-cream text-ink font-body antialiased">
+  <header class="w-full sticky top-0 z-40 bg-cream/80 backdrop-blur">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3">
+        <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-sky text-white font-bold">🍽️</span>
+        <span class="font-semibold tracking-tight">PlateCraft</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-6 text-sm">
+        <a href="#features" class="hover:text-terracotta">Features</a>
+        <a href="#how" class="hover:text-terracotta">How it works</a>
+        <a href="#faq" class="hover:text-terracotta">FAQ</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <a class="btn-ghost" href="app.html" aria-label="Open the planner">Open planner</a>
+        <a class="btn-primary" href="app.html">Plan my month</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero: vertical storytelling, immersive -->
+    <section class="relative min-h-[92vh] flex items-end">
+      <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div class="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-gold/20 blur-3xl"></div>
+        <div class="absolute top-20 right-0 h-96 w-96 rounded-full bg-sky/15 blur-3xl"></div>
+      </div>
+      <div class="max-w-7xl mx-auto w-full px-6 pt-16 pb-24">
+        <p class="kicker">Meal planning, reimagined</p>
+        <h1 class="text-[clamp(2.2rem,6vw,4.2rem)] leading-[1.05] font-extrabold tracking-tight mt-3">
+          Plan a whole month of meals in minutes
+        </h1>
+        <p class="mt-4 md:mt-6 text-ink/70 text-lg md:text-xl max-w-2xl">
+          PlateCraft balances breakfast, lunch, dinner, and a sweet finish. Bring your favorite foods and we will auto-weave them into a delicious, varied calendar.
+        </p>
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <a class="btn-primary" href="app.html">Start planning now</a>
+          <a class="btn-ghost" href="#features">See how it works</a>
+        </div>
+        <div class="mt-12 grid grid-cols-12 gap-4">
+          <div class="col-span-8 card card-hover p-6">
+            <div class="flex items-center justify-between">
+              <span class="chip">Auto-balanced</span>
+              <span class="chip">Print-ready</span>
+            </div>
+            <div class="mt-4">
+              <p class="text-ink/70 text-sm">A peek at your month</p>
+              <div class="mt-3 grid grid-cols-7 gap-2">
+                <div class="rounded-lg bg-mist p-2 text-center text-xs">Mon<br><span class="text-ink font-medium">Oats</span></div>
+                <div class="rounded-lg bg-mist p-2 text-center text-xs">Tue<br><span class="text-ink font-medium">Wrap</span></div>
+                <div class="rounded-lg bg-mist p-2 text-center text-xs">Wed<br><span class="text-ink font-medium">Stir-fry</span></div>
+                <div class="rounded-lg bg-mist p-2 text-center text-xs">Thu<br><span class="text-ink font-medium">Bowl</span></div>
+                <div class="rounded-lg bg-mist p-2 text-center text-xs">Fri<br><span class="text-ink font-medium">Tacos</span></div>
+                <div class="rounded-lg bg-mist p-2 text-center text-xs">Sat<br><span class="text-ink font-medium">Pasta</span></div>
+                <div class="rounded-lg bg-mist p-2 text-center text-xs">Sun<br><span class="text-ink font-medium">Curry</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-span-4 card card-hover p-6">
+            <p class="text-sm text-ink/60">Dessert fallback</p>
+            <p class="mt-1 text-ink font-semibold">No desserts? We got you.</p>
+            <ul class="mt-3 space-y-2 text-sm text-ink/80">
+              <li>• Greek yogurt with honey</li>
+              <li>• Fruit salad</li>
+              <li>• Dark chocolate square</li>
+              <li>• Baked cinnamon apple</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="py-20">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="grid gap-6">
+          <div class="card card-hover p-8 md:max-w-3xl">
+            <h3 class="text-2xl font-bold tracking-tight">Bring your foods</h3>
+            <p class="mt-2 text-ink/70">Add breakfasts, lunches, dinners, and anything else. PlateCraft uses them to craft a varied plan without boring repeats.</p>
+          </div>
+          <div class="md:ml-24 card card-hover p-8 md:max-w-2xl">
+            <h3 class="text-2xl font-bold tracking-tight">Auto-balanced calendar</h3>
+            <p class="mt-2 text-ink/70">We rotate through your picks to balance across the week, then add smart desserts if your list has none.</p>
+          </div>
+          <div class="md:ml-48 card card-hover p-8">
+            <h3 class="text-2xl font-bold tracking-tight">Export and print like a pro</h3>
+            <p class="mt-2 text-ink/70">Export weekly or monthly CSV/JSON, or print a clean layout right from your browser.</p>
+          </div>
+        </div>
+
+        <div class="mt-14 flex flex-wrap items-center gap-6">
+          <div class="card p-6">
+            <p class="text-4xl font-extrabold">28</p>
+            <p class="text-ink/60">Days planned</p>
+          </div>
+          <div class="card p-6">
+            <p class="text-4xl font-extrabold">4</p>
+            <p class="text-ink/60">Weeks exportable</p>
+          </div>
+          <div class="card p-6">
+            <p class="text-4xl font-extrabold">∞</p>
+            <p class="text-ink/60">Custom dishes</p>
+          </div>
+        </div>
+
+        <div class="mt-16 flex items-center justify-between gap-6 bg-white rounded-2xl p-8 shadow-soft">
+          <div>
+            <p class="kicker">Ready to try?</p>
+            <h3 class="text-2xl font-bold tracking-tight">Make your first month in under a minute</h3>
+          </div>
+          <a class="btn-primary" href="app.html">Launch planner</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="how" class="py-20">
+      <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-6">
+        <div class="card p-6">
+          <div class="chip">Step 1</div>
+          <h4 class="mt-3 font-semibold">Add foods</h4>
+          <p class="text-ink/70 text-sm mt-1">Type in your dishes or tap suggestions. Categorize as breakfast, lunch, dinner, dessert, or any.</p>
+        </div>
+        <div class="card p-6">
+          <div class="chip">Step 2</div>
+          <h4 class="mt-3 font-semibold">Generate plan</h4>
+          <p class="text-ink/70 text-sm mt-1">PlateCraft autobalances across the month and fills desserts if you did not add any.</p>
+        </div>
+        <div class="card p-6">
+          <div class="chip">Step 3</div>
+          <h4 class="mt-3 font-semibold">Export and print</h4>
+          <p class="text-ink/70 text-sm mt-1">Export CSV or JSON, or print beautiful week pages that are easy to stick on your fridge.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="py-20">
+      <div class="max-w-4xl mx-auto px-6">
+        <h3 class="text-3xl font-bold tracking-tight">FAQs</h3>
+        <div class="mt-6 space-y-6">
+          <details class="card p-5">
+            <summary class="font-semibold cursor-pointer">What if I have no desserts in my list?</summary>
+            <p class="mt-2 text-ink/70">We include tasteful default dessert suggestions automatically, like fruit salad or yogurt with honey. You can still add your own at any time.</p>
+          </details>
+          <details class="card p-5">
+            <summary class="font-semibold cursor-pointer">Can I print each week?</summary>
+            <p class="mt-2 text-ink/70">Yes. The app includes a print layout that breaks by week and fits nicely on paper with high contrast.</p>
+          </details>
+          <details class="card p-5">
+            <summary class="font-semibold cursor-pointer">Does it save my foods?</summary>
+            <p class="mt-2 text-ink/70">Your foods and plans are saved in your browser using localStorage so your work persists across reloads.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="py-10 border-t border-ink/10">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-ink/70 text-sm">Built with care. © <span class="font-semibold">PlateCraft</span></p>
+      <a class="link-cta" href="app.html">Open the planner</a>
+    </div>
+  </footer>
+  <script src="scripts/helpers.js"></script>
+  <script src="scripts/ui.js"></script>
+  <script src="scripts/main.js"></script>
+</body>
+</html>

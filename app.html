@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PlateCraft Planner</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#0F172A',
+            cream: '#FFF9F2',
+            mist: '#F2F5F9',
+            terracotta: '#E25C3D',
+            sky: '#3AA0C7',
+            gold: '#E2B714'
+          },
+          fontFamily: {
+            display: ['Inter', 'ui-sans-serif', 'system-ui'],
+            body: ['Inter', 'ui-sans-serif', 'system-ui']
+          },
+          boxShadow: { soft: '0 10px 30px rgba(15, 23, 42, 0.08)' }
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss" data-teda="tailwind-apply">
+    @layer components {
+      .btn-primary { @apply inline-flex items-center justify-center whitespace-nowrap rounded-full bg-terracotta px-4 py-2.5 text-white font-medium tracking-wide shadow-soft transition hover:bg-[#cf4c2b] focus:outline-none focus:ring-2 focus:ring-terracotta/30 active:scale-[0.98]; }
+      .btn-ghost { @apply inline-flex items-center justify-center whitespace-nowrap rounded-full border border-ink/10 bg-white px-4 py-2.5 text-ink font-medium hover:bg-mist transition focus:outline-none focus:ring-2 focus:ring-sky/20; }
+      .btn-icon { @apply inline-flex items-center justify-center rounded-full border border-ink/10 bg-white h-10 w-10 hover:bg-mist transition; }
+      .chip { @apply inline-flex items-center rounded-full bg-mist text-ink/80 text-xs font-medium px-3 py-1; }
+      .field { @apply w-full rounded-xl border border-ink/10 bg-white px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky/30; }
+      .label { @apply block text-xs font-semibold text-ink/60 mb-1; }
+      .card { @apply rounded-2xl bg-white shadow-soft; }
+      .card-tight { @apply rounded-xl bg-white shadow-soft; }
+      .nav-link { @apply px-3 py-2 rounded-full text-sm hover:bg-mist transition; }
+      .day-cell { @apply relative rounded-xl border border-ink/10 bg-white p-3 hover:border-sky/40 focus:outline-none focus:ring-2 focus:ring-sky/30; }
+      .meal-item { @apply flex items-center justify-between gap-2 rounded-lg bg-mist px-2 py-1 text-xs; }
+    }
+  </style>
+</head>
+<body class="bg-cream text-ink font-body">
+  <header class="sticky top-0 z-40 bg-cream/80 backdrop-blur border-b border-ink/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-sky text-white font-bold" aria-label="Back to landing">🍽️</a>
+        <div>
+          <p class="text-sm font-semibold leading-4">PlateCraft</p>
+          <p class="text-xs text-ink/60 leading-4">Monthly Meal Planner</p>
+        </div>
+      </div>
+      <nav class="hidden md:flex items-center gap-2">
+        <a href="#library" class="nav-link">Food library</a>
+        <a href="#planner" class="nav-link">Planner</a>
+        <a href="#export" class="nav-link">Export</a>
+      </nav>
+      <div class="flex items-center gap-2">
+        <button id="btn-print" class="btn-ghost" aria-label="Print current view">🖨️ Print</button>
+        <a class="btn-primary" href="#planner">Generate plan</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 lg:py-8">
+    <div class="grid lg:grid-cols-12 gap-6">
+      <!-- Sidebar / Library -->
+      <aside id="library" class="lg:col-span-4 space-y-4">
+        <section class="card p-4">
+          <h2 class="text-lg font-bold">Your Food Library</h2>
+          <p class="text-sm text-ink/70">Add foods by category. The planner will rotate them smartly.</p>
+          <form id="food-form" class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-2" aria-label="Add food form">
+            <div class="sm:col-span-2">
+              <label for="food-name" class="label">Food name</label>
+              <input id="food-name" class="field" type="text" placeholder="e.g., Overnight oats" required aria-required="true" />
+            </div>
+            <div>
+              <label for="food-cat" class="label">Category</label>
+              <select id="food-cat" class="field" aria-label="Food category">
+                <option value="any">Any</option>
+                <option value="breakfast">Breakfast</option>
+                <option value="lunch">Lunch</option>
+                <option value="dinner">Dinner</option>
+                <option value="dessert">Dessert</option>
+              </select>
+            </div>
+            <div class="sm:col-span-3 flex items-center gap-2 mt-1">
+              <button type="submit" class="btn-primary" aria-label="Add food">Add food</button>
+              <button id="btn-sample" type="button" class="btn-ghost" aria-label="Add sample foods">Add sample foods</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="card p-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-semibold">Quick suggestions</h3>
+            <span class="chip">Tap to add</span>
+          </div>
+          <div id="suggestions" class="mt-3 flex flex-wrap gap-2" aria-live="polite"></div>
+        </section>
+
+        <section class="card p-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-semibold">Foods</h3>
+            <div class="text-xs text-ink/60"><span id="food-count">0</span> items</div>
+          </div>
+          <div id="food-list" class="mt-3 grid gap-2" aria-live="polite"></div>
+        </section>
+
+        <section class="card p-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-semibold">Planner settings</h3>
+          </div>
+          <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="label" for="repeat-gap">Avoid repeats (days)</label>
+              <input id="repeat-gap" class="field" type="number" min="0" max="6" value="2" />
+            </div>
+            <div class="flex items-center justify-between bg-white rounded-xl border border-ink/10 px-3.5 py-2.5">
+              <div>
+                <p class="text-sm font-medium">Include desserts</p>
+                <p class="text-xs text-ink/60">Add defaults if none</p>
+              </div>
+              <label class="inline-flex items-center cursor-pointer">
+                <input id="toggle-desserts" type="checkbox" class="sr-only" checked>
+                <span class="w-10 h-6 bg-mist rounded-full relative">
+                  <span class="dot absolute top-1 left-1 h-4 w-4 rounded-full bg-ink transition"></span>
+                </span>
+              </label>
+            </div>
+          </div>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <button id="btn-generate" class="btn-primary" aria-label="Generate monthly plan">Generate month</button>
+            <button id="btn-clear-plan" class="btn-ghost" aria-label="Clear plan">Clear plan</button>
+          </div>
+        </section>
+      </aside>
+
+      <!-- Planner -->
+      <section id="planner" class="lg:col-span-8 space-y-4">
+        <div class="card p-4">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+              <button class="btn-ghost" id="tab-week" aria-pressed="true">Week view</button>
+              <button class="btn-ghost" id="tab-month">Month view</button>
+            </div>
+            <div class="flex items-center gap-2">
+              <button id="btn-prev-week" class="btn-icon" aria-label="Previous week">◀️</button>
+              <div class="chip" id="week-label">Week 1 of 4</div>
+              <button id="btn-next-week" class="btn-icon" aria-label="Next week">▶️</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="week-container" class="grid gap-4" aria-live="polite"></div>
+        <div id="month-container" class="hidden" aria-live="polite"></div>
+
+        <div id="export" class="card p-4">
+          <h3 class="font-semibold">Export</h3>
+          <p class="text-sm text-ink/70">Export CSV or JSON, or print from the header. CSV is compatible with spreadsheets.</p>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <button id="btn-export-week" class="btn-ghost" aria-label="Export current week as CSV">Export week (CSV)</button>
+            <button id="btn-export-month" class="btn-ghost" aria-label="Export month as CSV">Export month (CSV)</button>
+            <button id="btn-export-json" class="btn-ghost" aria-label="Export month as JSON">Export month (JSON)</button>
+            <button id="btn-copy" class="btn-ghost" aria-label="Copy month as text">Copy month</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Edit Day Modal -->
+  <div id="day-modal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="day-modal-title">
+    <div class="absolute inset-0 bg-black/40"></div>
+    <div class="relative mx-auto mt-24 max-w-lg w-[92%] card p-5">
+      <div class="flex items-start justify-between">
+        <div>
+          <h3 id="day-modal-title" class="text-lg font-semibold">Edit day</h3>
+          <p class="text-sm text-ink/60">Replace meals for this day</p>
+        </div>
+        <button id="day-modal-close" class="btn-icon" aria-label="Close">✖️</button>
+      </div>
+      <form id="day-form" class="mt-4 grid gap-3">
+        <div>
+          <label class="label" for="edit-breakfast">Breakfast</label>
+          <select id="edit-breakfast" class="field"></select>
+        </div>
+        <div>
+          <label class="label" for="edit-lunch">Lunch</label>
+          <select id="edit-lunch" class="field"></select>
+        </div>
+        <div>
+          <label class="label" for="edit-dinner">Dinner</label>
+          <select id="edit-dinner" class="field"></select>
+        </div>
+        <div>
+          <label class="label" for="edit-dessert">Dessert</label>
+          <select id="edit-dessert" class="field"></select>
+        </div>
+        <div class="flex items-center justify-end gap-2 mt-2">
+          <button type="button" id="day-delete-dessert" class="btn-ghost">Remove dessert</button>
+          <button type="submit" class="btn-primary">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Required script order -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="scripts/helpers.js"></script>
+  <script src="scripts/ui.js"></script>
+  <script src="scripts/main.js"></script>
+</body>
+</html>
